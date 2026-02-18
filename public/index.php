@@ -22,14 +22,14 @@ $authResource = new AuthResource();
 $router->addRoute('POST', '/login', [$authResource, 'login']);
 
 // Logica de protección
-$currenUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-if(strpos($currenUri, '/login') === false){
+if(strpos($currentUri, '/login') === false){
     $headers = getallheaders();
     $token = null;
 
     if (isset($headers['Authorization'])){
-        $token = str_replace('Bearer ', '', $headers['Autorization']);
+        $token = str_replace('Bearer ', '', $headers['Authorization']);
     }
 
 
@@ -43,15 +43,9 @@ if(strpos($currenUri, '/login') === false){
     }
 }
 
-// rutas
+// rutas ya protegidas por la aurorización
 $router->addRoute('GET', '/users', [$userResource, 'index']);
-$router->addRoute('GET', '/users/{id}', [$userResource, 'show']);
-$router->addRoute('POST', '/users', [$userResource, 'store']);
-$router->addRoute('PUT', '/users/{id}', [$userResource, 'update']);
-$router->addRoute('DELETE', '/users/{id}', [$userResource, 'destroy']);
-
 $router->addRoute('GET', '/productos', [$productResource, 'index']);
-$router->addRoute('GET', '/productos/{id}', [$productResource, 'show']);
 
 $router->dispatch();
 ?>
